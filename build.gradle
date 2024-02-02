@@ -1,0 +1,258 @@
+plugins {
+    id 'idea'
+    id "com.diffplug.spotless" version "6.25.0" apply false
+    id "com.github.johnrengelman.shadow" version '7.1.2' apply false
+    id 'com.google.cloud.tools.jib' version '3.3.1' apply false
+    id 'io.micronaut.application' version "$micronautGradleVersion" apply false
+    id "io.micronaut.library" version "$micronautGradleVersion" apply false
+    id "io.micronaut.aot" version "$micronautGradleVersion" apply false
+    id 'io.micronaut.test-resources' version "$micronautGradleVersion" apply false
+    id 'org.asciidoctor.jvm.convert' version '3.3.2'
+    id 'org.asciidoctor.editorconfig' version '3.3.2'
+}
+
+group 'dmcs'
+
+def javaVersion = JavaVersion.VERSION_17
+
+idea {
+    project {
+        languageLevel = javaVersion
+    }
+}
+
+configurations {
+    asciidocExtensions
+}
+
+dependencies {
+    asciidocExtensions 'com.bmuschko:asciidoctorj-tabbed-code-extension:0.3'
+}
+
+subprojects {
+
+    group "org.dmcs.servicebus"
+    version "$project.version"
+
+    repositories {
+        if (!System.getenv('BUILD_DISPLAY_NAME'))
+            mavenLocal()
+        mavenCentral()
+    }
+
+    tasks.withType(Javadoc).tap {
+        configureEach {
+            enabled = false
+        }
+    }
+
+    tasks.withType(Jar).tap {
+        configureEach {
+            preserveFileTimestamps false
+            reproducibleFileOrder true
+            duplicatesStrategy DuplicatesStrategy.INCLUDE
+            manifest {
+                attributes(
+                        'Automatic-Module-Name': project.name,
+                        'Implementation-Vendor': 'Unifi Credit',
+                        'Implementation-Version': archiveVersion.orElse('N/A')
+                )
+            }
+        }
+    }
+
+    tasks.configureEach { task ->
+        if (task.name.startsWith('jib')) {
+            task.dependsOn project.tasks.build
+        }
+    }
+
+    configurations.configureEach {
+        exclude group: "org.apache.logging.log4j"
+        exclude group: "org.jetbrains.kotlin"
+    }
+}
+
+asciidoctorj {
+    fatalWarnings missingIncludes()
+}
+
+asciidoctor {
+    group 'documentation'
+    description 'Build HTML documentation'
+
+    baseDirFollowsSourceDir()
+//    dependsOn prepareSources
+    sourceDir 'docs'
+    configurations 'asciidocExtensions'
+
+    sources {
+        include 'index.adoc'
+    }
+    resources {
+        from(new File(sourceDir, "docs")) {
+            include 'images/**'
+        }
+    }
+
+    attributes toc: 'left',
+            toclevels: 3,
+            'source-highlighter': 'rouge'
+}
+
+asciidoctorEditorConfig {
+    attributes revnumber: project.version
+    additionalAttributes 'docs/asciidoc/attributes.adoc'
+    additionalAttributes asciidoctor.asciidoctorj
+}
+
+repositories {
+    mavenCentral()
+}
+
+if (false) {
+    plugins {
+        id 'com.diffplug.gradle.spotless'
+    }
+
+    spotless {
+        java {
+            palantirJavaFormat()
+            target '**/*.java'
+        }
+        kotlinGradle {
+            target '**/*.gradle.kts'
+            ktlint()
+        }
+        kotlin {
+            target '**/*.kt'
+            ktlint()
+        }
+        groovy {
+            target '**/*.groovy'
+            ktlint()
+        }
+        yaml {
+            target '**/*.yml', '**/*.yaml'
+            ktlint()
+        }
+        json {
+            target '**/*.json'
+            ktlint()
+        }
+//        licenseHeader {
+//            license '/* (C)$YEAR */'
+//            target '**/*.java', '**/*.kt', '**/*.groovy', '**/*.gradle.kts'
+//        }
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+//        format 'misc', {
+//            // define the files to apply `misc` to
+//            target '*.gradle', '.gitattributes', '.gitignore'
+//
+//            trimTrailingWhitespace()
+//            indentWithSpaces(4)
+//            endWithNewline()
+//        }
+//        java {
+//            palantirJavaFormat()
+//            formatAnnotations()
+//            trimTrailingWhitespace()
+//            indentWithSpaces(4)
+//            endWithNewline()
+//            licenseHeader '/* (C)$YEAR */'
+//        }
+//        java {
+//            target fileTree('.') {
+//                include '**/*.java'
+//                exclude '**/build/**', '**/build-*/**'
+//            }
+//            toggleOffOn()
+////            palantirJavaFormat()
+//            removeUnusedImports()
+//            trimTrailingWhitespace()
+//            endWithNewline()
+//        }
+    }
+
+}
+
+
+//configure(subprojects.findAll { !['platform'].contains(it.name) }) {
+//    apply plugin: 'java'
+//    apply plugin: 'idea'
+//    apply plugin: 'jacoco'
+//
+//    compileJava {
+//        sourceCompatibility = JavaVersion.VERSION_1_8
+//        targetCompatibility = JavaVersion.VERSION_1_8
+//        options.encoding = "UTF-8"
+//        options.release = 8
+//    }
+//
+//    compileTestJava {
+//        sourceCompatibility = JavaVersion.VERSION_11
+//        targetCompatibility = JavaVersion.VERSION_11
+//        compileTestJava.options.encoding = 'UTF-8'
+//    }
+//
+//    javadoc {
+//        options.encoding = "UTF-8"
+//    }
+//
+//    repositories {
+//        mavenCentral()
+//        mavenLocal()
+//    }
+//
+//    dependencies {
+//        implementation platform(project(':platform'))
+//
+//        testImplementation 'org.junit.jupiter:junit-jupiter'
+//        testImplementation 'io.github.artsok:rerunner-jupiter'
+//        testImplementation 'org.awaitility:awaitility'
+//        testImplementation 'org.assertj:assertj-core'
+//        testImplementation 'com.tngtech.archunit:archunit-junit5'
+//        testImplementation 'net.javacrumbs.json-unit:json-unit-assertj'
+//        testImplementation 'ch.qos.logback:logback-classic'
+//        testImplementation 'org.mockito:mockito-inline'
+//        testImplementation 'org.mockito:mockito-junit-jupiter'
+//    }
+//
+//    tasks.clean.doFirst {
+//        delete "/tmp/reports/$project.name"
+//        println "Deleted /tmp/reports/$project.name"
+//    }
+//
+//    test {
+//        finalizedBy jacocoTestReport
+//        reports.junitXml.destination = file("/tmp/reports/$project.name")
+//        reports.html.destination = file("/tmp/reports/$project.name")
+//
+//        useJUnitPlatform()
+//        testLogging {
+//            minGranularity = 3
+//            events "passed", "skipped", "failed"
+//        }
+//    }
+//
+//    jacoco {
+//        toolVersion = "0.8.7"
+//    }
+//
+//    jacocoTestReport {
+//        dependsOn test
+//        reports {
+//            xml {
+//                enabled true
+//            }
+//        }
+//    }
+//
+//    if (JavaVersion.current().isJava8Compatible()) {
+//        tasks.withType(Javadoc) {
+//            options.addStringOption('Xdoclint:none', '-quiet')
+//        }
+//    }
+//}

@@ -1,0 +1,14 @@
+micronaut:
+  security.enabled: false
+  application:
+    name: demo
+  config-client:
+    enabled: true
+kubernetes:
+  client:
+    discovery:
+      mode: endpoint
+      mode-configuration:
+        endpoint:
+          watch:
+            enabled: true

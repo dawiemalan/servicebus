@@ -1,0 +1,12 @@
+rootProject.name = 'servicebus'
+
+include 'platform'
+include 'servicebus-core'
+include 'servicebus-controller'
+include 'servicebus-tests'
+//include 'servicebus-manager'
+//include ':integrations:kafka'
+//include ':integrations:pulsar'
+include ':integrations:rabbitmq'
+include ':frameworks:servicebus-micronaut'
+include ':frameworks:servicebus-spring-boot'

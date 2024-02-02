@@ -1,0 +1,47 @@
+plugins {
+    id 'groovy'
+    id 'maven-publish'
+    id "io.micronaut.minimal.library"
+}
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+
+micronaut {
+    processing {
+        annotations "dmcs.*"
+    }
+}
+
+dependencies {
+
+    implementation platform(project(':servicebus-bom'))
+    compileOnly "org.projectlombok:lombok"
+
+    annotationProcessor "org.projectlombok:lombok"
+    annotationProcessor "io.micronaut:micronaut-inject-groovy"
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+
+    compileOnly "io.micronaut:micronaut-http-client"
+
+    api 'org.apache.zookeeper:zookeeper'
+    api 'org.apache.curator:curator-recipes'
+    api 'org.apache.curator:curator-x-async'
+    api 'org.apache.curator:curator-x-discovery'
+
+    api "org.redisson:redisson-micronaut-40"
+
+    testImplementation "io.micronaut:micronaut-inject-groovy-test"
+    testImplementation "io.micronaut:micronaut-inject-java-test"
+
+//	compileOnly 'org.springframework.cloud:spring-cloud-netflix-core'
+
+    //implementation("io.micronaut.cache:micronaut-cache-caffeine")
+
+    api 'commons-codec:commons-codec'
+
+    testImplementation "org.codehaus.groovy:groovy"
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-3.0")
+    testImplementation "org.spockframework:spock-core"
+
+    api project(":servicebus-core")
+}

@@ -1,0 +1,51 @@
+plugins {
+    id 'groovy'
+    id 'java-library'
+    id 'maven-publish'
+    id "io.micronaut.minimal.library"
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+dependencies {
+
+    implementation platform(project(':platform'))
+
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    api platform('com.fasterxml.jackson:jackson-bom:2.13.4')
+    api('com.fasterxml.jackson.core:jackson-annotations')
+    api('com.fasterxml.jackson.core:jackson-databind')
+    api('org.apache.commons:commons-lang3')
+    api('org.apache.commons:commons-collections4')
+    api 'io.netty:netty-common'
+    api 'com.fasterxml.uuid:java-uuid-generator'
+
+    compileOnly 'ch.qos.logback:logback-classic'
+    api 'org.codehaus.janino:janino'
+
+    // for wildcard matching
+    api 'com.hrakaroo:glob:0.9.0'
+
+    api 'com.expediagroup.beans:bull-bean-transformer:2.2.3'
+
+    api 'org.apache.jclouds:jclouds-core'
+    api 'io.cloudevents:cloudevents-api'
+    api 'io.cloudevents:cloudevents-json-jackson'
+
+    testImplementation testFixtures(project(':servicebus-tests'))
+    testImplementation("org.apache.groovy:groovy:$groovyVersion")
+    testImplementation platform("org.spockframework:spock-bom:2.3-groovy-4.0")
+    testImplementation "org.spockframework:spock-core"
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}

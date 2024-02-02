@@ -1,0 +1,119 @@
+plugins {
+    id("com.github.johnrengelman.shadow")
+    id("io.micronaut.application")
+    id("com.google.cloud.tools.jib")
+    id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("io.micronaut.aot")
+}
+
+dependencies {
+    annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.micrometer:micronaut-micrometer-annotation")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    annotationProcessor("io.micronaut.security:micronaut-security-annotations")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor("io.micronaut.tracing:micronaut-tracing-opentelemetry-annotation")
+    annotationProcessor("io.micronaut.validation:micronaut-validation-processor")
+
+    implementation("io.micrometer:context-propagation")
+    implementation("io.micronaut:micronaut-aop")
+    implementation("io.micronaut:micronaut-management")
+
+    implementation("io.micronaut.kubernetes:micronaut-kubernetes-client-reactor")
+    implementation("io.micronaut.kubernetes:micronaut-kubernetes-discovery-client")
+
+//	implementation("io.micronaut.objectstorage:micronaut-object-storage-local")
+    implementation("io.micronaut.problem:micronaut-problem-json")
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.tracing:micronaut-tracing-opentelemetry-http")
+    implementation("io.micronaut.validation:micronaut-validation")
+    implementation("io.opentelemetry:opentelemetry-exporter-jaeger")
+
+    implementation("io.micronaut.micrometer:micronaut-micrometer-core")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-observation")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-observation-http")
+    implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
+//	implementation("io.opentelemetry:opentelemetry-exporter-logging")
+//	implementation("io.opentelemetry:opentelemetry-exporter-otlp")
+
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    implementation("jakarta.validation:jakarta.validation-api")
+
+    implementation("org.apache.logging.log4j:log4j-api:2.19.0")
+    implementation("org.apache.logging.log4j:log4j-core:2.19.0")
+
+    compileOnly("io.micronaut:micronaut-http-client")
+    compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
+    compileOnly("org.projectlombok:lombok")
+    runtimeOnly("org.slf4j:log4j-over-slf4j:1.7.36")
+    runtimeOnly("org.slf4j:slf4j-simple")
+    runtimeOnly("org.yaml:snakeyaml")
+
+    testImplementation("io.micronaut:micronaut-http-client")
+    testImplementation("org.awaitility:awaitility:4.2.0")
+    testImplementation("org.junit.platform:junit-platform-suite-engine")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers")
+
+//	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-management")
+//	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-ui")
+
+    aotPlugins platform("io.micronaut.platform:micronaut-platform:4.2.4")
+    aotPlugins("io.micronaut.security:micronaut-security-aot")
+}
+
+application {
+    mainClass.set("dmcs.servicebus.controller.Application")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+
+tasks {
+    jib {
+        to {
+            image = "gcr.io/myapp/jib-image"
+        }
+    }
+}
+
+graalvmNative {
+    toolchainDetection = false
+    binaries {
+        main {
+            imageName.set('servicebus-controller')
+            javaLauncher = javaToolchains.launcherFor {
+                languageVersion = JavaLanguageVersion.of(17)
+                vendor = JvmVendorSpec.matching("GraalVM Community")
+            }
+            quickBuild = true
+        }
+    }
+}
+
+micronaut {
+    runtime("netty")
+    testRuntime("junit5")
+    processing {
+        incremental(true)
+        annotations("com.example.*")
+    }
+    aot {
+        // Please review carefully the optimizations enabled below
+        // Check https://micronaut-projects.github.io/micronaut-aot/latest/guide/ for more details
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+        configurationProperties.put("micronaut.security.jwks.enabled", "false")
+    }
+}

@@ -1,0 +1,32 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+
+dependencies {
+
+    implementation platform(project(':platform'))
+    implementation platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+
+    implementation "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+    annotationProcessor 'org.springframework.boot:spring-boot-autoconfigure-processor'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
+    annotationProcessor platform("org.springframework.boot:spring-boot-dependencies:$springBootVersion")
+
+    implementation 'org.springframework.boot:spring-boot-starter'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+//	compileOnly platform("org.springframework.cloud:spring-cloud-dependencies:$springCloudVersion")
+
+    implementation 'com.fasterxml.jackson.core:jackson-databind'
+    implementation 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+
+//	testImplementation testFixtures(project(":core"))
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+//	testImplementation 'io.micrometer:micrometer-core'
+
+    api project(':servicebus-core')
+}

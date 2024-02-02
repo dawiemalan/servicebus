@@ -1,0 +1,72 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+    id 'io.micronaut.minimal.library'
+    id "io.micronaut.aot"
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
+
+micronaut {
+    runtime("netty")
+    testRuntime("spock2")
+    processing {
+        incremental(true)
+        annotations("dmcs.*")
+    }
+    aot {
+        optimizeServiceLoading = false
+        convertYamlToJava = false
+        precomputeOperations = true
+        cacheEnvironment = true
+        optimizeClassLoading = true
+        deduceEnvironment = true
+        optimizeNetty = true
+    }
+}
+
+
+dependencies {
+
+    implementation platform(project(':platform'))
+
+    implementation "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    annotationProcessor("io.micronaut:micronaut-http-validation")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+
+    implementation("io.micronaut:micronaut-aop")
+    implementation("io.micronaut:micronaut-http-server-netty")
+    implementation("io.micronaut:micronaut-management")
+    implementation("io.micronaut.kubernetes:micronaut-kubernetes-client-reactor")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.projectreactor:reactor-core")
+    implementation("jakarta.annotation:jakarta.annotation-api")
+    compileOnly("io.micronaut:micronaut-http-client")
+    compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
+    runtimeOnly("ch.qos.logback:logback-classic")
+    testImplementation("io.micronaut:micronaut-http-client")
+
+    api 'org.apache.zookeeper:zookeeper'
+    api 'org.apache.curator:curator-recipes'
+    api 'org.apache.curator:curator-x-discovery'
+
+    api "io.micronaut.cache:micronaut-cache-core:"
+
+    testImplementation("io.micronaut:micronaut-http-client")
+    testImplementation("org.awaitility:awaitility:4.2.0")
+    testImplementation("org.junit.platform:junit-platform-suite-engine")
+    testImplementation("org.mockito:mockito-core")
+    testImplementation("org.testcontainers:junit-jupiter")
+    testImplementation("org.testcontainers:testcontainers")
+//	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-management")
+//	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-ui")
+
+    api project(":servicebus-core")
+}

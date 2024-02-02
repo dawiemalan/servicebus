@@ -1,0 +1,31 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id "io.micronaut.minimal.library"
+}
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
+
+micronaut {
+    processing {
+        annotations "dmcs.*"
+    }
+}
+
+dependencies {
+
+    implementation platform(project(':platform'))
+
+    annotationProcessor "io.micronaut:micronaut-inject-java"
+
+    compileOnly "org.projectlombok:lombok"
+    annotationProcessor "org.projectlombok:lombok"
+
+    api 'com.rabbitmq:amqp-client:5.17.1'
+    api("io.micronaut.rabbitmq:micronaut-rabbitmq")
+
+    testImplementation "io.micronaut:micronaut-inject-groovy-test"
+    testImplementation "io.micronaut:micronaut-inject-java-test"
+
+    implementation project(':servicebus-core')
+}
