@@ -26,7 +26,7 @@ dependencies {
 	compileOnly 'com.fasterxml.jackson.core:jackson-databind'
 	compileOnly "com.fasterxml.jackson.datatype:jackson-datatype-joda"
 	compileOnly "com.fasterxml.jackson.core:jackson-annotations"
-	api 'com.fasterxml.uuid:java-uuid-generator'
+//	api 'com.fasterxml.uuid:java-uuid-generator'
 
 	api 'com.google.guava:guava'
 	api 'org.apache.commons:commons-lang3'
@@ -35,8 +35,8 @@ dependencies {
 	api 'com.expediagroup.beans:bull-bean-transformer:2.2.3'
 	api 'com.expediagroup.beans:bull-map-transformer:2.2.3'
 
-	api 'ch.qos.logback:logback-classic'
-	api 'org.codehaus.janino:janino'
+//	api 'ch.qos.logback:logback-classic'
+//	api 'org.codehaus.janino:janino'
 
 	testImplementation "io.micronaut:micronaut-inject-groovy-test"
 	testImplementation "io.micronaut:micronaut-inject-java-test"

@@ -1,8 +1,7 @@
-endpoints:
-  all:
+micronaut:
+  server:
+    port: 8888
+
+  control-panel:
     enabled: true
-    sensitive: false
-  health:
-    details-visible: ANONYMOUS
-  loggers:
-    write-sensitive: false
+    allowed-environments: dev, test, prod

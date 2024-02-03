@@ -1,0 +1,34 @@
+plugins {
+	id 'java'
+	id 'java-gradle-plugin'
+}
+
+sourceCompatibility = 11
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation gradleApi()
+}
+
+gradlePlugin {
+	plugins {
+		dmcsPlugin {
+			id = 'io.dmcs.gradle.plugin'
+			implementationClass = 'io.dmcs.gradle.DmcsGradlePlugin'
+		}
+	}
+}
+
+jar {
+	manifest {
+		attributes(
+				'Implementation-Title': 'DMCS Gradle Plugin',
+				'Implementation-Version': archiveVersion,
+				'Implementation-Vendor': 'DMCS',
+		)
+	}
+	from 'gradle.properties'
+}

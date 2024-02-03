@@ -69,6 +69,39 @@ subprojects {
         exclude group: "org.apache.logging.log4j"
         exclude group: "org.jetbrains.kotlin"
     }
+
+    def publishPlugin = plugins.findPlugin(MavenPublishPlugin)
+    if (publishPlugin) {
+
+        // add repository config
+        def pubExt = extensions.findByType(PublishingExtension)
+        pubExt.with {
+
+            boolean isPlatform = project.plugins.findPlugin("java-platform") != null
+
+            if (!publications.find { it.name == 'maven' }) {
+                if (isPlatform)
+                    publications.create('maven', MavenPublication, { it.from project.components.javaPlatform })
+                else
+                    publications.create('maven', MavenPublication, { it.from project.components.java })
+            }
+
+            if (repositories.isEmpty()) {
+
+                pubExt.repositories {
+                    maven {
+                        name = 'GitHubPackages'
+                        url = 'https://maven.pkg.github.com/dawiemalan/servicebus'
+                        credentials {
+                            username = System.getenv("GITHUB_ACTOR")
+                            password = System.getenv("GITHUB_TOKEN")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
 
 asciidoctorj {

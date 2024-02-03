@@ -1,10 +1,11 @@
-otel:
-  exclusions:
-    - /health
-  traces:
-    exporter: jaeger,logging,otlp
+#otel:
+#  exclusions:
+#    - /health
+#  traces:
+#    exporter: jaeger,logging,otlp
 micronaut:
   security:
+    enabled: false
     authentication: bearer
     token:
       jwt:
@@ -27,7 +28,7 @@ micronaut:
       swagger-ui:
         paths: classpath:META-INF/swagger/views/swagger-ui
         mapping: /swagger-ui/**
-elasticsearch.httpHosts: http://localhost:9200,http://127.0.0.2:9200
+
 micrometer:
   observation:
     http:
@@ -35,3 +36,14 @@ micrometer:
         enabled: true
       client:
         enabled: true
+
+endpoints:
+  all:
+    enabled: true
+    sensitive: false
+  health:
+    details-visible: ANONYMOUS
+  loggers:
+    write-sensitive: false
+  prometheus:
+    enabled: true

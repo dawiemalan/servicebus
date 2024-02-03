@@ -1,5 +1,6 @@
 rootProject.name = 'servicebus'
 
+//include 'gradle-plugin'
 include 'platform'
 include 'servicebus-common'
 include 'servicebus-core'

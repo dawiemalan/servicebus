@@ -1,7 +1,7 @@
 micronaut:
   security.enabled: false
   application:
-    name: demo
+    name: servicebus-controller
   config-client:
     enabled: true
 kubernetes:
@@ -12,3 +12,6 @@ kubernetes:
         endpoint:
           watch:
             enabled: true
+    config-maps:
+      enabled: true
+      use-api: true
