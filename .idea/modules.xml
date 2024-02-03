@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/servicebus.iml" filepath="$PROJECT_DIR$/.idea/modules/servicebus.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/frameworks/servicebus-micronaut/servicebus.frameworks.servicebus-micronaut.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frameworks/servicebus-micronaut/servicebus.frameworks.servicebus-micronaut.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/frameworks/servicebus-spring-boot/servicebus.frameworks.servicebus-spring-boot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frameworks/servicebus-spring-boot/servicebus.frameworks.servicebus-spring-boot.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/integrations/rabbitmq/servicebus.integrations.rabbitmq.main.iml" filepath="$PROJECT_DIR$/.idea/modules/integrations/rabbitmq/servicebus.integrations.rabbitmq.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/servicebus-common/servicebus.servicebus-common.main.iml" filepath="$PROJECT_DIR$/.idea/modules/servicebus-common/servicebus.servicebus-common.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/servicebus-common/servicebus.servicebus-common.test.iml" filepath="$PROJECT_DIR$/.idea/modules/servicebus-common/servicebus.servicebus-common.test.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/servicebus-controller/servicebus.servicebus-controller.main.iml" filepath="$PROJECT_DIR$/.idea/modules/servicebus-controller/servicebus.servicebus-controller.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/servicebus-core/servicebus.servicebus-core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/servicebus-core/servicebus.servicebus-core.main.iml" />
+    </modules>
+  </component>
+</project>

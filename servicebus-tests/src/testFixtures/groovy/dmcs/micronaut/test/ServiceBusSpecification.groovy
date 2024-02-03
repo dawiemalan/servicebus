@@ -47,9 +47,7 @@ abstract class ServiceBusSpecification extends Specification implements TestProp
     @Override
     Map<String, String> getProperties() {
 
-        startArtemisContainer()
         startDbContainer()
-        startLdapContainer()
         startRedisContainer()
         startRabbitMqContainer()
         startZooKeeperContainer()
@@ -57,9 +55,6 @@ abstract class ServiceBusSpecification extends Specification implements TestProp
         def properties = [
                 "micronaut.server.port"                  : "-1",
                 "micronaut.metrics.export.influx.enabled": "false",
-                "micronaut.jms.enabled"                  : "false",
-                "micronaut.jms.activemq.artemis.enabled" : "false",
-                'micronaut.jms.auto-start'               : 'false',
                 'dataSource.dbCreate'                    : 'create-drop',
                 'hibernate.hbm2ddl.auto'                 : 'create-drop',
                 'dataSource.properties.initialSize'      : '5',
@@ -67,17 +62,6 @@ abstract class ServiceBusSpecification extends Specification implements TestProp
                 'micronaut.http.services.core.urls'      : "http://localhost",
                 "micronaut.env.deduction"                : "false"
         ]
-
-        if (enableArtemis())
-            properties.putAll([
-                    "micronaut.jms.enabled"                           : "true",
-                    "micronaut.jms.activemq.artemis.enabled"          : "true",
-                    "micronaut.jms.activemq.artemis.connection-string":
-                            "tcp://${artemisContainer.host}:${artemisContainer.getMappedPort(61616)}?consumerWindowSize=0",
-                    "micronaut.jms.activemq.artemis.username"         : "admin",
-                    "micronaut.jms.activemq.artemis.password"         : "admin",
-                    'micronaut.jms.auto-start'                        : 'false',
-            ])
 
         if (enableRedis())
             properties.putAll([
@@ -96,33 +80,6 @@ abstract class ServiceBusSpecification extends Specification implements TestProp
             return configureDatasource(properties)
 
         return properties
-    }
-
-    private void startArtemisContainer() {
-
-        if (!enableArtemis())
-            return
-
-        if (!artemisContainer) {
-            artemisContainer = new GenericContainer<>(ARTEMIS_IMAGE)
-                    .withEnv([
-                            "AMQ_USER"    : "admin",
-                            "AMQ_PASSWORD": "admin",
-                    ])
-                    .withExposedPorts(8161, 61616, 5672)
-        }
-
-        if (!artemisContainer.running)
-            artemisContainer.start()
-    }
-
-    void restartArtemis() {
-
-        if (!enableArtemis() || !artemisContainer)
-            return
-
-        artemisContainer.stop()
-        artemisContainer.start()
     }
 
     @SuppressWarnings('GroovyFallthrough')
@@ -254,7 +211,6 @@ abstract class ServiceBusSpecification extends Specification implements TestProp
     private Map<String, String> configurePostgres(Map<String, String> properties) {
 
         properties.putAll([
-                'activiti.databaseType'     : 'postgres',
                 'dataSource.driverClassName': 'org.postgresql.Driver',
                 'dataSource.url'            : postgresContainer.jdbcUrl,
                 'dataSource.username'       : postgresContainer.username,

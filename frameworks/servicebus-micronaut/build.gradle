@@ -57,10 +57,12 @@ dependencies {
     api 'org.apache.curator:curator-recipes'
     api 'org.apache.curator:curator-x-discovery'
 
-    api "io.micronaut.cache:micronaut-cache-core:"
+    api "io.micronaut.cache:micronaut-cache-core"
+    api "io.micronaut.serde:micronaut-serde-jackson"
+    implementation "org.redisson:redisson-micronaut-40"
 
     testImplementation("io.micronaut:micronaut-http-client")
-    testImplementation("org.awaitility:awaitility:4.2.0")
+    testImplementation("org.awaitility:awaitility")
     testImplementation("org.junit.platform:junit-platform-suite-engine")
     testImplementation("org.mockito:mockito-core")
     testImplementation("org.testcontainers:junit-jupiter")

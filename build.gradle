@@ -11,7 +11,7 @@ plugins {
     id 'org.asciidoctor.editorconfig' version '3.3.2'
 }
 
-group 'dmcs'
+group 'io.dmcs'
 
 def javaVersion = JavaVersion.VERSION_17
 
@@ -31,12 +31,10 @@ dependencies {
 
 subprojects {
 
-    group "org.dmcs.servicebus"
-    version "$project.version"
+    group rootProject.group
+    version rootProject.version
 
     repositories {
-        if (!System.getenv('BUILD_DISPLAY_NAME'))
-            mavenLocal()
         mavenCentral()
     }
 
@@ -54,7 +52,7 @@ subprojects {
             manifest {
                 attributes(
                         'Automatic-Module-Name': project.name,
-                        'Implementation-Vendor': 'Unifi Credit',
+                        'Implementation-Vendor': 'DMCS',
                         'Implementation-Version': archiveVersion.orElse('N/A')
                 )
             }

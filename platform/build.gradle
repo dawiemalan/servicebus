@@ -87,13 +87,14 @@ dependencies {
         // jupiter/junit testing
         api 'junit:junit:4.13.2'
         api 'org.junit.platform:junit-platform-launcher:1.8.2'
-        api 'org.junit.jupiter:junit-jupiter:5.8.2'
-        api 'org.junit.jupiter:junit-jupiter-api:5.8.2'
-        api 'org.junit.jupiter:junit-jupiter-params:5.8.2'
-        api 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+        api 'org.junit.jupiter:junit-jupiter:5.9.2'
+        api 'org.junit.jupiter:junit-jupiter-api:5.9.2'
+        api 'org.junit.jupiter:junit-jupiter-params:5.9.2'
+        api 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+        api 'org.junit.platform:junit-platform-suite-engine:1.10.0'
         api 'org.hamcrest:hamcrest-core:2.2'
         api 'org.hamcrest:hamcrest-library:2.2'
-        api 'org.mockito:mockito-junit-jupiter:4.5.1'
+        api 'org.mockito:mockito-junit-jupiter:5.2.0'
         api "com.squareup.okhttp3:okhttp:4.10.0"
         api 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
@@ -105,16 +106,19 @@ dependencies {
         api "org.testcontainers:postgresql:$testContainersVersion"
         api "org.testcontainers:junit-jupiter:$testContainersVersion"
 
+        api "org.awaitility:awaitility:4.2.0"
+        api "org.mockito:mockito-core:5.0.0"
+
         // expression language
-        api 'javax.el:javax.el-api:3.0.0'
-        api 'de.odysseus.juel:juel-impl:2.2.7'
-        api 'de.odysseus.juel:juel-spi:2.2.7'
+//        api 'javax.el:javax.el-api:3.0.0'
+//        api 'de.odysseus.juel:juel-impl:2.2.7'
+//        api 'de.odysseus.juel:juel-spi:2.2.7'
 
         // logging
         api 'ch.qos.logback:logback-classic:1.4.5'
         api 'org.codehaus.janino:janino:3.1.10'
         api 'org.slf4j:slf4j-api:2.0.7'
-        api 'org.slf4j:slf4j-log4j12:1.7.26'
+        api 'org.slf4j:slf4j-log4j12:2.0.7'
 
 //		// database drivers
 //		api 'com.zaxxer:HikariCP:5.0.1'
