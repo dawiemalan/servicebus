@@ -1,0 +1,86 @@
+plugins {
+	id("com.github.johnrengelman.shadow")
+	id("io.micronaut.application")
+	id("com.google.cloud.tools.jib")
+	id("io.micronaut.aot")
+}
+
+dependencies {
+	implementation platform(project(':platform'))
+
+	annotationProcessor("org.projectlombok:lombok")
+	compileOnly("org.projectlombok:lombok")
+
+	annotationProcessor("io.micronaut:micronaut-http-validation")
+	annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+	annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+
+	implementation("io.micronaut:micronaut-management")
+	implementation("io.micronaut.kubernetes:micronaut-kubernetes-informer")
+	implementation("io.micronaut.serde:micronaut-serde-jackson")
+
+	compileOnly("io.micronaut:micronaut-http-client")
+	compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
+
+	runtimeOnly("ch.qos.logback:logback-classic")
+	runtimeOnly("org.yaml:snakeyaml")
+
+	testImplementation("io.micronaut:micronaut-http-client")
+
+	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-management")
+	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-ui")
+
+	implementation project(":core")
+}
+
+application {
+	mainClass.set("io.dmcs.servicebus.controller.Application")
+}
+
+java {
+	sourceCompatibility = JavaVersion.toVersion("17")
+	targetCompatibility = JavaVersion.toVersion("17")
+}
+
+tasks {
+	jib {
+		allowInsecureRegistries = true
+		to {
+			image = "server:5000/servicebus-controller:latest"
+			tags = [project.version] as List<String>
+		}
+	}
+}
+
+graalvmNative {
+	toolchainDetection = false
+	binaries {
+		main {
+			imageName.set('servicebus-controller')
+			javaLauncher = javaToolchains.launcherFor {
+				languageVersion = JavaLanguageVersion.of(17)
+				vendor = JvmVendorSpec.matching("GraalVM Community")
+			}
+			quickBuild = true
+		}
+	}
+}
+
+micronaut {
+	runtime("netty")
+	testRuntime("junit5")
+	processing {
+		incremental(true)
+		annotations("com.example.*")
+	}
+	aot {
+		optimizeServiceLoading = false
+		convertYamlToJava = false
+		precomputeOperations = true
+		cacheEnvironment = true
+		optimizeClassLoading = true
+		deduceEnvironment = true
+		optimizeNetty = true
+		configurationProperties.put("micronaut.security.jwks.enabled", "false")
+	}
+}

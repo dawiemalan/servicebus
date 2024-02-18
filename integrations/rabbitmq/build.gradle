@@ -27,5 +27,5 @@ dependencies {
     testImplementation "io.micronaut:micronaut-inject-groovy-test"
     testImplementation "io.micronaut:micronaut-inject-java-test"
 
-    implementation project(':servicebus-core')
+	implementation project(':core')
 }

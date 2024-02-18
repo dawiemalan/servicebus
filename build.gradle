@@ -11,7 +11,7 @@ plugins {
     id 'org.asciidoctor.editorconfig' version '3.3.2'
 }
 
-group 'io.dmcs'
+group 'io.dmcs.servicebus'
 
 def javaVersion = JavaVersion.VERSION_17
 

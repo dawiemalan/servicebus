@@ -1,0 +1,43 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+//	id "io.micronaut.minimal.library"
+}
+
+sourceCompatibility = targetCompatibility = JavaVersion.VERSION_11
+
+dependencies {
+
+	implementation platform(project(':platform'))
+
+	compileOnly "org.projectlombok:lombok:$lombokVersion"
+	testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+	annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+//	api 'com.fasterxml.jackson.core:jackson-databind'
+//	api "com.fasterxml.jackson.datatype:jackson-datatype-jsr310"
+//	api "com.fasterxml.jackson.core:jackson-annotations"
+//	api 'org.openapitools:jackson-databind-nullable:0.2.6'
+
+	//noinspection VulnerableLibrariesLocal
+//	api 'org.apache.oltu.oauth2:org.apache.oltu.oauth2.client:1.0.2'
+
+//	api "com.squareup.okhttp3:okhttp"
+//	api "io.micronaut:micronaut-http-client-jdk"
+
+	api 'com.google.guava:guava'
+	api 'org.apache.commons:commons-lang3'
+
+	// for copying beans
+	api 'com.expediagroup.beans:bull-bean-transformer:2.2.3'
+	api 'com.expediagroup.beans:bull-map-transformer:2.2.3'
+
+//	api 'ch.qos.logback:logback-classic'
+//	api 'org.codehaus.janino:janino'
+
+	compileOnly 'org.slf4j:slf4j-api:2.0.7'
+
+	testImplementation 'org.junit.jupiter:junit-jupiter-api'
+	testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+}

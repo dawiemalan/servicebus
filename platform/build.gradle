@@ -33,7 +33,7 @@ dependencies {
 
     constraints {
 
-        api "org.projectlombok:lombok:1.18.30"
+        api "org.projectlombok:lombok:$lombokVersion"
 
         // micronaut
         api "io.micronaut:micronaut-http-client:$micronautVersion"
@@ -49,6 +49,8 @@ dependencies {
         api 'commons-net:commons-net:3.9.0'
         api 'org.ehcache:ehcache:3.10.8'
         api 'com.github.zafarkhaja:java-semver:0.9.0'
+        api "com.squareup.okhttp3:okhttp:4.10.0"
+        api 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
         api "org.apache.jclouds:jclouds-core:$jCloudsVersion"
 
@@ -76,29 +78,26 @@ dependencies {
         api 'org.bouncycastle:bcprov-jdk16:1.46'
 
         // testing
-        api 'com.h2database:h2:2.1.212'
+        api 'com.h2database:h2:2.1.214'
         api 'org.spockframework:spock-core:2.1-groovy-3.0'
-        api 'org.assertj:assertj-core:3.21.0'
+        api 'org.assertj:assertj-core:3.23.1'
         api 'org.mockito:mockito-core:4.2.0'
         api 'org.awaitility:awaitility:4.2.0'
 
         // jupiter/junit testing
         api 'junit:junit:4.13.2'
-        api 'org.junit.platform:junit-platform-launcher:1.8.2'
-        api 'org.junit.jupiter:junit-jupiter:5.9.2'
-        api 'org.junit.jupiter:junit-jupiter-api:5.9.2'
-        api 'org.junit.jupiter:junit-jupiter-params:5.9.2'
-        api 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+        api 'org.junit.platform:junit-platform-launcher:1.10.0'
+        api 'org.junit.jupiter:junit-jupiter:5.10.0'
+        api 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+        api 'org.junit.jupiter:junit-jupiter-params:5.10.0'
+        api 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
         api 'org.junit.platform:junit-platform-suite-engine:1.10.0'
         api 'org.hamcrest:hamcrest-core:2.2'
         api 'org.hamcrest:hamcrest-library:2.2'
         api 'org.mockito:mockito-junit-jupiter:5.2.0'
-        api "com.squareup.okhttp3:okhttp:4.10.0"
-        api 'com.squareup.okhttp3:logging-interceptor:4.10.0'
 
         // test containers
         api "org.testcontainers:testcontainers:$testContainersVersion"
-        api "org.testcontainers:mysql:$testContainersVersion"
         api "org.testcontainers:mariadb:$testContainersVersion"
         api "org.testcontainers:mongodb:$testContainersVersion"
         api "org.testcontainers:postgresql:$testContainersVersion"
@@ -131,7 +130,6 @@ dependencies {
 //		// object dbs
 //		api 'redis.clients:jedis:4.2.1'
 //		api 'io.lettuce:lettuce-core:6.1.8.RELEASE'
-//		api 'org.mongodb:mongodb-driver-sync:4.5.1'
 
         // swagger
         api "io.springfox:springfox-spi:3.0.0"
@@ -147,10 +145,28 @@ dependencies {
 publishing {
     publications {
         platform(MavenPublication) {
-            groupId = project.group
-            artifactId = project.name
+            groupId = 'io.dmcs.servicebus'
+            artifactId = 'servicebus-bom'
             version = rootProject.version
             from components.javaPlatform
+
+            pom {
+                name = 'Servicebus BOM'
+                description = 'Service bus implementation. Open and free for commercial use.'
+                url = 'https://github.com/dawiemalan/servicebus'
+                developers {
+                    developer {
+                        id = 'dawiemalan'
+                        name = 'Dawie Malan'
+                        email = 'malan.dawie@gmail.com'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:https://github.com/dawiemalan/servicebus.git'
+                    developerConnection = 'scm:git@github.com:dawiemalan/servicebus.git'
+                    url = 'https://github.com/dawiemalan/servicebus.git'
+                }
+            }
         }
     }
 }

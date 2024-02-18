@@ -1,0 +1,23 @@
+<configuration>
+
+    <appender name="APPENDER" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%cyan(%d{HH:mm:ss.SSS}) %gray([%thread]) %highlight(%-5level) %magenta(%logger{36}) - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="info">
+        <appender-ref ref="APPENDER"/>
+    </root>
+
+    <logger name="io.dmcs" level="DEBUG"/>
+
+    <logger name="com.zaxxer.hikari.HikariConfig" level="debug"/>
+    <logger name="org.apache.zookeeper" level="error"/>
+    <logger name="org.apache.curator" level="warn"/>
+    <logger name="org.apache.curator.retry" level="error"/>
+    <logger name="org.apache.kafka" level="warn"/>
+    <logger name="io.micronaut.retry.intercept" level="off"/>
+    <!--    <logger name="io.micronaut.discovery.config" level="debug"/>-->
+    <!--    <logger name="io.micronaut.http.server.netty" level="debug"/>-->
+</configuration>

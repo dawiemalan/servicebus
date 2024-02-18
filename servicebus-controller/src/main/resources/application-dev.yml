@@ -1,7 +1,0 @@
-micronaut:
-  server:
-    port: 8888
-
-  control-panel:
-    enabled: true
-    allowed-environments: dev, test, prod
