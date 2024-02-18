@@ -1,0 +1,31 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+}
+
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}
+
+dependencies {
+
+	implementation platform(project(':platform'))
+
+	implementation "org.projectlombok:lombok"
+	annotationProcessor "org.projectlombok:lombok"
+
+	implementation("jakarta.annotation:jakarta.annotation-api")
+	runtimeOnly("ch.qos.logback:logback-classic")
+
+	// https://weld.cdi-spec.org/
+	api "org.jboss.weld.se:weld-se-shaded:5.1.1.Final"
+
+	testImplementation("org.awaitility:awaitility")
+	testImplementation("org.junit.platform:junit-platform-suite-engine")
+	testImplementation("org.mockito:mockito-core")
+	testImplementation("org.testcontainers:junit-jupiter")
+	testImplementation("org.testcontainers:testcontainers")
+
+	api project(":core")
+}
