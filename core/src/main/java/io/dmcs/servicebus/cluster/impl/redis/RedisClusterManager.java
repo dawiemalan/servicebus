@@ -19,9 +19,11 @@ public class RedisClusterManager extends AbstractClusterManager {
     protected RedissonClient redisson;
     protected RedisServiceRegistry serviceRegistry;
 
-    public RedisClusterManager(ServiceBusProperties config,
-                               PlatformSupport platformSupport,
-                               RedissonClient redisson) {
+    public RedisClusterManager(ServiceBusProperties config, PlatformSupport platformSupport) {
+        this(config, platformSupport, platformSupport.locateBean(RedissonClient.class).orElseThrow());
+    }
+
+    public RedisClusterManager(ServiceBusProperties config, PlatformSupport platformSupport, RedissonClient redisson) {
 
         super(config, platformSupport);
         this.redisson = redisson;

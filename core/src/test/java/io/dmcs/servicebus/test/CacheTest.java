@@ -1,15 +1,9 @@
 package io.dmcs.servicebus.test;
 
-import io.dmcs.test.TestApplication;
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import jakarta.inject.Inject;
-import org.junit.Ignore;
-
-@MicronautTest(application = TestApplication.class)
-@Ignore
+//@MicronautTest(application = TestApplication.class)
+//@Ignore
 class CacheTest {
 
-	@Inject
 //	@Shared
 //	TestCacheService testCacheService;
 

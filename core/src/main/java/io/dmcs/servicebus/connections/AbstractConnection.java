@@ -2,7 +2,6 @@ package io.dmcs.servicebus.connections;
 
 import io.dmcs.common.listeners.ListenerManager;
 import io.dmcs.common.listeners.StandardListenerManager;
-import io.micronaut.core.convert.value.MutableConvertibleValues;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +9,7 @@ import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
@@ -35,7 +35,7 @@ public abstract class AbstractConnection<C extends Connection, M> implements Con
     @Setter
     protected boolean autoReconnect = false;
     @Getter
-    protected final MutableConvertibleValues<Object> attributes = MutableConvertibleValues.of(new LinkedHashMap<>());
+    protected final Map<String, Object> attributes = new LinkedHashMap<>();
 
     @Getter
     protected ZonedDateTime lastActivity = ZonedDateTime.now();

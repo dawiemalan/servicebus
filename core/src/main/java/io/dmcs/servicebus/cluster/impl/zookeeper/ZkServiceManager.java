@@ -6,11 +6,7 @@ import io.dmcs.servicebus.cluster.ClusterManager;
 import io.dmcs.servicebus.cluster.ClusterStateListener;
 import io.dmcs.servicebus.cluster.leadership.LeaderGroup;
 import io.dmcs.servicebus.services.AbstractServiceManager;
-import io.dmcs.servicebus.services.ServiceManager;
 import io.dmcs.servicebus.services.ServiceRegistration;
-import io.micronaut.context.annotation.Context;
-import io.micronaut.context.annotation.Requires;
-import jakarta.annotation.PreDestroy;
 import lombok.Getter;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
@@ -20,10 +16,11 @@ import org.apache.curator.utils.CloseableUtils;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @SuppressWarnings("MnInjectionPoints")
-@Context
-@Requires(bean = ZkClusterManager.class, missingBeans = {ServiceManager.class})
+//@Context
+//@Requires(bean = ZkClusterManager.class, missingBeans = {ServiceManager.class})
 @Slf4j
 public class ZkServiceManager extends AbstractServiceManager implements ClusterStateListener {
 
@@ -71,7 +68,6 @@ public class ZkServiceManager extends AbstractServiceManager implements ClusterS
         zkClusterManager.serviceRegistry.set(instance).get();
     }
 
-    @PreDestroy
     @Override
     public synchronized void stop() {
 
@@ -104,6 +100,6 @@ public class ZkServiceManager extends AbstractServiceManager implements ClusterS
         return zkClusterManager.getServiceRegistry().list().get().stream()
                 .map(ServiceInstance::getServiceRegistration)
                 .sorted(Comparator.comparing(ServiceRegistration::getName))
-                .toList();
+                .collect(Collectors.toList());
     }
 }

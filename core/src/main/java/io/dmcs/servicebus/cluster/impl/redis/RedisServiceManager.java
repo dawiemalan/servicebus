@@ -16,6 +16,7 @@ import org.redisson.api.RedissonClient;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class RedisServiceManager extends AbstractServiceManager implements ClusterStateListener {
@@ -95,6 +96,6 @@ public class RedisServiceManager extends AbstractServiceManager implements Clust
     public Collection<ServiceRegistration> listServices() {
         return redisClusterManager.getServiceRegistry().list().stream()
                 .sorted(Comparator.comparing(ServiceRegistration::getName))
-                .toList();
+                .collect(Collectors.toList());
     }
 }

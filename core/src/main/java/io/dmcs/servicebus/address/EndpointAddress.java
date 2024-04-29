@@ -127,8 +127,8 @@ public class EndpointAddress {
         if (obj == null)
             return false;
 
-        if (obj instanceof EndpointAddress ea)
-            return ea.hash == hash;
+        if (obj instanceof EndpointAddress)
+            return ((EndpointAddress) obj).hash == hash;
 
         if (obj instanceof String)
             return hash == obj.hashCode();

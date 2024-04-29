@@ -1,8 +1,8 @@
 plugins {
-	id("com.github.johnrengelman.shadow")
 	id("io.micronaut.application")
-	id("com.google.cloud.tools.jib")
 	id("io.micronaut.aot")
+	id("com.github.johnrengelman.shadow")
+	id("com.google.cloud.tools.jib")
 }
 
 dependencies {
@@ -11,15 +11,15 @@ dependencies {
 	annotationProcessor("org.projectlombok:lombok")
 	compileOnly("org.projectlombok:lombok")
 
-	annotationProcessor("io.micronaut:micronaut-http-validation")
+//	annotationProcessor("io.micronaut:micronaut-http-validation")
 	annotationProcessor("io.micronaut.openapi:micronaut-openapi")
-	annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+//	annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
 
-	implementation("io.micronaut:micronaut-management")
-	implementation("io.micronaut.kubernetes:micronaut-kubernetes-informer")
-	implementation("io.micronaut.serde:micronaut-serde-jackson")
+//	implementation("io.micronaut:micronaut-management")
+//	implementation("io.micronaut.kubernetes:micronaut-kubernetes-informer")
+//	implementation("io.micronaut.serde:micronaut-serde-jackson")
 
-	compileOnly("io.micronaut:micronaut-http-client")
+//	compileOnly("io.micronaut:micronaut-http-client")
 	compileOnly("io.micronaut.openapi:micronaut-openapi-annotations")
 
 	runtimeOnly("ch.qos.logback:logback-classic")
@@ -27,8 +27,8 @@ dependencies {
 
 	testImplementation("io.micronaut:micronaut-http-client")
 
-	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-management")
-	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-ui")
+//	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-management")
+//	developmentOnly("io.micronaut.controlpanel:micronaut-control-panel-ui")
 
 	implementation project(":core")
 }
@@ -71,7 +71,7 @@ micronaut {
 	testRuntime("junit5")
 	processing {
 		incremental(true)
-		annotations("com.example.*")
+		annotations("io.dmcs.*")
 	}
 	aot {
 		optimizeServiceLoading = false

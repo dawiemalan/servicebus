@@ -3,6 +3,8 @@ package io.dmcs.servicebus.micronaut;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dmcs.servicebus.PlatformSupport;
 import io.dmcs.servicebus.cluster.ClusterManager;
+import io.dmcs.servicebus.cluster.impl.redis.RedisClusterManager;
+import io.dmcs.servicebus.cluster.impl.redis.RedisServiceManager;
 import io.dmcs.servicebus.cluster.impl.zookeeper.ZkClusterManager;
 import io.dmcs.servicebus.cluster.impl.zookeeper.ZkServiceManager;
 import io.dmcs.servicebus.config.ClusterType;
@@ -25,49 +27,19 @@ import org.redisson.codec.JsonJacksonCodec;
 @Factory
 public class MnServiceBusFactory {
 
+    @SuppressWarnings("MnInjectionPoints")
     @Context
     @Refreshable("servicebus")
-    PlatformSupport platformSupport(@NotNull ApplicationContext context, @NotNull ServiceBusProperties serviceBusProperties, @NotNull Environment environment) {
+    PlatformSupport platformSupport(@NotNull ApplicationContext context, @NotNull ServiceBusProperties serviceBusProperties,
+                                    @NotNull Environment environment) {
         return new MnPlatformSupport(context, serviceBusProperties, environment);
     }
 
+    @SuppressWarnings("MnInjectionPoints")
     @Bean
     Codec redissonCodec(@NotNull ObjectMapper objectMapper) {
         return new JsonJacksonCodec(objectMapper);
     }
-
-//	@Context
-//	@Bean(preDestroy = "stop")
-//	@Requires(property = "servicebus.cluster-type", value = "redis")
-//	@SneakyThrows
-//	ClusterManager redisClusterManager(@NotNull ServiceBusProperties config, @NotNull PlatformSupport platformSupport,
-//									   @Named(TaskExecutors.IO) ExecutorService executorService,
-//									   @NotNull Codec codec) {
-//
-//		var redissonConfig = new Config();
-//
-//		if (config.getServerUrls().isEmpty())
-//			throw new ExceptionInInitializerError("No server urls configured");
-//
-//		redissonConfig.useSingleServer().setAddress(config.getServerUrls().stream().findFirst().orElseThrow());
-//		redissonConfig.setLockWatchdogTimeout(15000);
-//		redissonConfig.setMinCleanUpDelay(5000);
-//		redissonConfig.setMaxCleanUpDelay(30000);
-//		redissonConfig.setExecutor(executorService);
-//		redissonConfig.setReliableTopicWatchdogTimeout(300000);
-//		redissonConfig.setReferenceEnabled(true);
-//		redissonConfig.setCodec(codec);
-//
-//		var connectionListener = new RedissonConnectionListener();
-//		redissonConfig.setConnectionListener(connectionListener);
-//
-//		RedissonClient redissonClient = Redisson.create(redissonConfig);
-//
-//		var cm = new RedisClusterManager(config, platformSupport, redissonClient);
-//		connectionListener.setClusterManager(cm);
-//
-//		return cm;
-//	}
 
     @Context
     @Bean(preDestroy = "stop")
@@ -78,17 +50,22 @@ public class MnServiceBusFactory {
             return new WsClusterManager(config, platformSupport);
         else if (config.getClusterType() == ClusterType.ZOOKEEPER)
             return new ZkClusterManager(config, platformSupport);
+        else if (config.getClusterType() == ClusterType.REDIS)
+            return new RedisClusterManager(config, platformSupport);
 
         throw new ExceptionInInitializerError("Undefined cluster type: " + config.getClusterType());
     }
 
     @Context
-    ServiceManager serviceManager(@NotNull ServiceBusProperties config, @NotNull ClusterManager clusterManager, @NotNull PlatformSupport platformSupport) {
+    ServiceManager serviceManager(@NotNull ServiceBusProperties config, @NotNull ClusterManager clusterManager,
+                                  @NotNull PlatformSupport platformSupport) {
 
         if (config.getClusterType() == ClusterType.WEBSOCKET)
             return new WsServiceManager(clusterManager, platformSupport);
         else if (config.getClusterType() == ClusterType.ZOOKEEPER)
             return new ZkServiceManager(clusterManager, platformSupport);
+        else if (config.getClusterType() == ClusterType.REDIS)
+            return new RedisServiceManager(clusterManager, platformSupport);
 
         throw new ExceptionInInitializerError("Undefined cluster type: " + config.getClusterType());
     }

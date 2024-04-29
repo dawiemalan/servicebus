@@ -1,14 +1,14 @@
 plugins {
-    id 'idea'
-    id "com.diffplug.spotless" version "6.25.0" apply false
-    id "com.github.johnrengelman.shadow" version '7.1.2' apply false
-    id 'com.google.cloud.tools.jib' version '3.3.1' apply false
-    id 'io.micronaut.application' version "$micronautGradleVersion" apply false
-    id "io.micronaut.library" version "$micronautGradleVersion" apply false
-    id "io.micronaut.aot" version "$micronautGradleVersion" apply false
-    id 'io.micronaut.test-resources' version "$micronautGradleVersion" apply false
-    id 'org.asciidoctor.jvm.convert' version '3.3.2'
-    id 'org.asciidoctor.editorconfig' version '3.3.2'
+	id 'idea'
+	id "com.diffplug.spotless" version "6.25.0" apply false
+	id "com.github.johnrengelman.shadow" version '7.1.2' apply false
+	id 'com.google.cloud.tools.jib' version '3.3.1' apply false
+	id 'io.micronaut.application' version "$micronautGradleVersion" apply false
+	id "io.micronaut.library" version "$micronautGradleVersion" apply false
+	id "io.micronaut.aot" version "$micronautGradleVersion" apply false
+	id 'io.micronaut.test-resources' version "$micronautGradleVersion" apply false
+	id 'org.asciidoctor.jvm.convert' version '3.3.2'
+	id 'org.asciidoctor.editorconfig' version '3.3.2'
 }
 
 group 'io.dmcs.servicebus'
@@ -16,168 +16,173 @@ group 'io.dmcs.servicebus'
 def javaVersion = JavaVersion.VERSION_17
 
 idea {
-    project {
-        languageLevel = javaVersion
-    }
+	project {
+		languageLevel = javaVersion
+	}
 }
 
 configurations {
-    asciidocExtensions
+	asciidocExtensions
 }
 
 dependencies {
-    asciidocExtensions 'com.bmuschko:asciidoctorj-tabbed-code-extension:0.3'
+	asciidocExtensions 'com.bmuschko:asciidoctorj-tabbed-code-extension:0.3'
 }
 
 subprojects {
 
-    group rootProject.group
-    version rootProject.version
+	group rootProject.group
+	version rootProject.version
 
-    repositories {
-        mavenCentral()
-    }
+	repositories {
+		mavenCentral()
+	}
 
-    tasks.withType(Javadoc).tap {
-        configureEach {
-            enabled = false
-        }
-    }
+	tasks.withType(Javadoc).tap {
+		configureEach {
+			enabled = false
+		}
+	}
 
-    tasks.withType(Jar).tap {
-        configureEach {
-            preserveFileTimestamps false
-            reproducibleFileOrder true
-            duplicatesStrategy DuplicatesStrategy.INCLUDE
-            manifest {
-                attributes(
-                        'Automatic-Module-Name': project.name,
-                        'Implementation-Vendor': 'DMCS',
-                        'Implementation-Version': archiveVersion.orElse('N/A')
-                )
-            }
-        }
-    }
+	tasks.withType(Jar).tap {
+		configureEach {
+			preserveFileTimestamps false
+			reproducibleFileOrder true
+			duplicatesStrategy DuplicatesStrategy.INCLUDE
+			manifest {
+				attributes(
+						'Automatic-Module-Name': project.name,
+						'Implementation-Vendor': 'DMCS',
+						'Implementation-Version': archiveVersion.orElse('N/A')
+				)
+			}
+		}
+	}
 
-    tasks.configureEach { task ->
-        if (task.name.startsWith('jib')) {
-            task.dependsOn project.tasks.build
-        }
-    }
+	tasks.configureEach { task ->
+		if (task.name.startsWith('jib')) {
+			task.dependsOn project.tasks.build
+		}
+	}
 
-    configurations.configureEach {
-        exclude group: "org.apache.logging.log4j"
-        exclude group: "org.jetbrains.kotlin"
-    }
+	configurations.configureEach {
+		exclude group: "org.apache.logging.log4j"
+		exclude group: "org.jetbrains.kotlin"
+	}
 
-    def publishPlugin = plugins.findPlugin(MavenPublishPlugin)
-    if (publishPlugin) {
+	def publishPlugin = plugins.findPlugin(MavenPublishPlugin)
+	if (publishPlugin) {
 
-        // add repository config
-        def pubExt = extensions.findByType(PublishingExtension)
-        pubExt.with {
+		// add repository config
+		def pubExt = extensions.findByType(PublishingExtension)
+		pubExt.with {
 
-            boolean isPlatform = project.plugins.findPlugin("java-platform") != null
+			boolean isPlatform = project.plugins.findPlugin("java-platform") != null
 
-            if (!publications.find { it.name == 'maven' }) {
-                if (isPlatform)
-                    publications.create('maven', MavenPublication, { it.from project.components.javaPlatform })
-                else
-                    publications.create('maven', MavenPublication, { it.from project.components.java })
-            }
+			if (!publications.find { it.name == 'maven' }) {
+				if (isPlatform)
+					publications.create('maven', MavenPublication, { it.from project.components.javaPlatform })
+				else
+					publications.create('maven', MavenPublication, { it.from project.components.java })
+			}
 
-            if (repositories.isEmpty()) {
+			if (repositories.isEmpty()) {
 
-                pubExt.repositories {
-                    maven {
-                        name = 'GitHubPackages'
-                        url = 'https://maven.pkg.github.com/dawiemalan/servicebus'
-                        credentials {
-                            username = System.getenv("GITHUB_ACTOR")
-                            password = System.getenv("GITHUB_TOKEN")
-                        }
-                    }
-                }
-            }
-        }
-    }
+				pubExt.repositories {
+					maven {
+						name = 'GitHubPackages'
+						url = 'https://maven.pkg.github.com/dawiemalan/servicebus'
+						credentials {
+							username = System.getenv("GITHUB_ACTOR")
+							password = System.getenv("GITHUB_TOKEN")
+						}
+					}
+				}
+			}
+		}
+	}
 
+	if (project.plugins.hasPlugin('java')) {
+		dependencies {
+			implementation platform(project(':platform'))
+		}
+	}
 }
 
 asciidoctorj {
-    fatalWarnings missingIncludes()
+	fatalWarnings missingIncludes()
 }
 
 asciidoctor {
-    group 'documentation'
-    description 'Build HTML documentation'
+	group 'documentation'
+	description 'Build HTML documentation'
 
-    baseDirFollowsSourceDir()
+	baseDirFollowsSourceDir()
 //    dependsOn prepareSources
-    sourceDir 'docs'
-    configurations 'asciidocExtensions'
+	sourceDir 'docs'
+	configurations 'asciidocExtensions'
 
-    sources {
-        include 'index.adoc'
-    }
-    resources {
-        from(new File(sourceDir, "docs")) {
-            include 'images/**'
-        }
-    }
+	sources {
+		include 'index.adoc'
+	}
+	resources {
+		from(new File(sourceDir, "docs")) {
+			include 'images/**'
+		}
+	}
 
-    attributes toc: 'left',
-            toclevels: 3,
-            'source-highlighter': 'rouge'
+	attributes toc: 'left',
+			toclevels: 3,
+			'source-highlighter': 'rouge'
 }
 
 asciidoctorEditorConfig {
-    attributes revnumber: project.version
-    additionalAttributes 'docs/asciidoc/attributes.adoc'
-    additionalAttributes asciidoctor.asciidoctorj
+	attributes revnumber: project.version
+	additionalAttributes 'docs/asciidoc/attributes.adoc'
+	additionalAttributes asciidoctor.asciidoctorj
 }
 
 repositories {
-    mavenCentral()
+	mavenCentral()
 }
 
 if (false) {
-    plugins {
-        id 'com.diffplug.gradle.spotless'
-    }
+	plugins {
+		id 'com.diffplug.gradle.spotless'
+	}
 
-    spotless {
-        java {
-            palantirJavaFormat()
-            target '**/*.java'
-        }
-        kotlinGradle {
-            target '**/*.gradle.kts'
-            ktlint()
-        }
-        kotlin {
-            target '**/*.kt'
-            ktlint()
-        }
-        groovy {
-            target '**/*.groovy'
-            ktlint()
-        }
-        yaml {
-            target '**/*.yml', '**/*.yaml'
-            ktlint()
-        }
-        json {
-            target '**/*.json'
-            ktlint()
-        }
+	spotless {
+		java {
+			palantirJavaFormat()
+			target '**/*.java'
+		}
+		kotlinGradle {
+			target '**/*.gradle.kts'
+			ktlint()
+		}
+		kotlin {
+			target '**/*.kt'
+			ktlint()
+		}
+		groovy {
+			target '**/*.groovy'
+			ktlint()
+		}
+		yaml {
+			target '**/*.yml', '**/*.yaml'
+			ktlint()
+		}
+		json {
+			target '**/*.json'
+			ktlint()
+		}
 //        licenseHeader {
 //            license '/* (C)$YEAR */'
 //            target '**/*.java', '**/*.kt', '**/*.groovy', '**/*.gradle.kts'
 //        }
-        trimTrailingWhitespace()
-        indentWithSpaces(4)
-        endWithNewline()
+		trimTrailingWhitespace()
+		indentWithSpaces(4)
+		endWithNewline()
 //        format 'misc', {
 //            // define the files to apply `misc` to
 //            target '*.gradle', '.gitattributes', '.gitignore'
@@ -205,7 +210,7 @@ if (false) {
 //            trimTrailingWhitespace()
 //            endWithNewline()
 //        }
-    }
+	}
 
 }
 

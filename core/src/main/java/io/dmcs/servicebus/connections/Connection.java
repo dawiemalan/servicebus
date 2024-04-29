@@ -2,14 +2,13 @@ package io.dmcs.servicebus.connections;
 
 import io.dmcs.common.listeners.Listenable;
 import io.dmcs.servicebus.connections.exceptions.ConnectionException;
-import io.micronaut.core.attr.MutableAttributeHolder;
 
 import java.io.Closeable;
 import java.io.IOException;
 
 @SuppressWarnings("rawtypes")
 public interface Connection<C extends Connection, M>
-        extends AutoCloseable, Closeable, Listenable<ConnectionListener<C, M>>, MutableAttributeHolder {
+        extends AutoCloseable, Closeable, Listenable<ConnectionListener<C, M>> {
 
     String getId();
 

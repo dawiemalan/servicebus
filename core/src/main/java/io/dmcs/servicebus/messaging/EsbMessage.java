@@ -56,8 +56,8 @@ public class EsbMessage implements Serializable {
     @SneakyThrows
     public static EsbMessage of(Object message, ObjectMapper objectMapper) {
 
-        if (message instanceof EsbMessage m)
-            return m;
+        if (message instanceof EsbMessage)
+            return (EsbMessage) message;
 
         // encode to json
         byte[] bytes = objectMapper.writeValueAsBytes(message);

@@ -2,7 +2,6 @@ package io.dmcs.servicebus.cluster;
 
 import com.fasterxml.jackson.annotation.JsonRootName;
 import io.dmcs.servicebus.config.ServiceBusProperties;
-import io.micronaut.context.env.Environment;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -25,11 +24,11 @@ public class ClusterMember {
         // for jackson
     }
 
-    public static ClusterMember of(ServiceBusProperties busProperties, Environment environment) {
+    public static ClusterMember of(ServiceBusProperties busProperties, String... profiles) {
 
         ClusterMember member = new ClusterMember();
         member.name = StringUtils.toRootLowerCase(busProperties.getServiceName());
-        member.profiles = environment.getActiveNames();
+        member.profiles = Set.of(profiles);
         member.region = StringUtils.toRootLowerCase(busProperties.getRegion());
         member.environment = StringUtils.toRootLowerCase(busProperties.getEnvironment());
 

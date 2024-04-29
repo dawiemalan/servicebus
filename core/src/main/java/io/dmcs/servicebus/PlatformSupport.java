@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dmcs.servicebus.address.EndpointAddress;
 import io.dmcs.servicebus.config.ServiceBusProperties;
 import io.dmcs.servicebus.events.EsbEvent;
-import jakarta.annotation.Nonnull;
 
 import java.util.Optional;
 import java.util.Set;
@@ -49,7 +48,7 @@ public interface PlatformSupport {
 
     void registerBean(Object bean);
 
-    <T> Optional<T> locateBean(@Nonnull Class<T> beanType);
+    <T> Optional<T> locateBean(Class<T> beanType);
 
-    <T> Optional<T> locateBean(@Nonnull Class<T> beanType, String qualifier);
+    <T> Optional<T> locateBean(Class<T> beanType, String qualifier);
 }
