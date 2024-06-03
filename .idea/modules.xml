@@ -9,6 +9,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/frameworks/micronaut/servicebus.frameworks.micronaut.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frameworks/micronaut/servicebus.frameworks.micronaut.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/frameworks/spring-boot/servicebus.frameworks.spring-boot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frameworks/spring-boot/servicebus.frameworks.spring-boot.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/integrations/rabbitmq/servicebus.integrations.rabbitmq.main.iml" filepath="$PROJECT_DIR$/.idea/modules/integrations/rabbitmq/servicebus.integrations.rabbitmq.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-fixtures/servicebus.test-fixtures.testFixtures.iml" filepath="$PROJECT_DIR$/.idea/modules/test-fixtures/servicebus.test-fixtures.testFixtures.iml" />
     </modules>
   </component>
 </project>

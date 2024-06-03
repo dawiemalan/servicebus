@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat
+
 plugins {
 	id 'idea'
 	id "com.diffplug.spotless" version "6.25.0" apply false
@@ -9,6 +11,7 @@ plugins {
 	id 'io.micronaut.test-resources' version "$micronautGradleVersion" apply false
 	id 'org.asciidoctor.jvm.convert' version '3.3.2'
 	id 'org.asciidoctor.editorconfig' version '3.3.2'
+	id 'io.quarkus.extension' version "$quarkusPlatformVersion" apply false
 }
 
 group 'io.dmcs.servicebus'
@@ -103,10 +106,37 @@ subprojects {
 	}
 
 	if (project.plugins.hasPlugin('java')) {
+		java {
+			withJavadocJar()
+			withSourcesJar()
+		}
+		compileJava {
+			sourceCompatibility = JavaVersion.VERSION_17
+			targetCompatibility = JavaVersion.VERSION_17
+			options.release = 17
+		}
+		compileTestJava {
+			sourceCompatibility = JavaVersion.VERSION_17
+			targetCompatibility = JavaVersion.VERSION_17
+		}
 		dependencies {
 			implementation platform(project(':platform'))
 		}
+		jar {
+			manifest {
+				attributes 'Automatic-Module-Name': project.group + '.' + project.name
+				attributes 'Built-By': 'build.dmcs.io'
+				attributes 'Build-Timestamp': new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ").format(new Date())
+				attributes 'Build-Version': project.version
+				attributes 'Implementation-Version': project.version
+				attributes 'Bundle-Version': project.version
+				attributes 'Created-By': "Gradle ${gradle.gradleVersion}"
+				attributes 'Build-Jdk': "${System.properties['java.version']} (${System.properties['java.vendor']} ${System.properties['java.vm.version']})"
+				attributes 'Build-OS': "${System.properties['os.name']} ${System.properties['os.arch']} ${System.properties['os.version']}"
+			}
+		}
 	}
+
 }
 
 asciidoctorj {

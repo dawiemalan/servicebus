@@ -1,0 +1,44 @@
+plugins {
+	id 'java-library'
+	id 'maven-publish'
+}
+
+compileJava {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+	options.release = 17
+}
+
+compileTestJava {
+	sourceCompatibility = JavaVersion.VERSION_17
+	targetCompatibility = JavaVersion.VERSION_17
+}
+
+dependencies {
+	api platform(project(':platform'))
+	api platform('io.quarkus:quarkus-bom:3.8.3')
+
+//	api project(':core')
+
+	implementation project(':frameworks:quarkus:quarkus-servicebus')
+	// why: https://quarkus.io/guides/building-my-first-extension
+	implementation 'io.quarkus:quarkus-smallrye-health-deployment'
+	testImplementation 'io.quarkus:quarkus-smallrye-health'
+}
+
+java {
+	withJavadocJar()
+	withSourcesJar()
+}
+
+normalization {
+	runtimeClasspath {
+		ignore '**/MANIFEST.MF'
+		ignore '**/frontend/**'
+	}
+}
+
+test {
+	systemProperty "java.util.logging.manager", "org.jboss.logmanager.LogManager"
+	systemProperty "platform.quarkus.native.builder-image", false
+}

@@ -1,0 +1,49 @@
+plugins {
+	id 'java-library'
+	id 'io.quarkus.extension'
+	id 'maven-publish'
+}
+
+quarkusExtension {
+	deploymentModule = 'quarkus-servicebus-deployment'
+}
+
+java {
+
+	withJavadocJar()
+	withSourcesJar()
+
+	registerFeature('metrics') {
+		usingSourceSet(sourceSets.main)
+	}
+}
+
+dependencies {
+
+	api platform(project(':platform'))
+	implementation platform("io.quarkus:quarkus-bom:$quarkusPlatformVersion")
+
+//	api project(':core')
+
+	implementation 'io.quarkus:quarkus-core'
+	implementation 'io.quarkus:quarkus-arc'
+	compileOnly 'org.graalvm.sdk:graal-sdk'
+	compileOnly 'io.quarkus:quarkus-micrometer'
+
+	metricsApi 'io.quarkus:quarkus-smallrye-health'
+	compileOnly 'com.fasterxml.jackson.core:jackson-databind'
+	compileOnly 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310'
+	compileOnly 'org.eclipse:yasson'
+	compileOnly 'org.graalvm.sdk:graal-sdk'
+
+//	testImplementation testFixtures(project(":core"))
+	testImplementation 'com.fasterxml.jackson.core:jackson-databind'
+	testImplementation 'org.eclipse:yasson'
+}
+
+normalization {
+	runtimeClasspath {
+		ignore '**/MANIFEST.MF'
+		ignore '**/frontend/**'
+	}
+}

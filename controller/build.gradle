@@ -37,11 +37,6 @@ application {
 	mainClass.set("io.dmcs.servicebus.controller.Application")
 }
 
-java {
-	sourceCompatibility = JavaVersion.toVersion("17")
-	targetCompatibility = JavaVersion.toVersion("17")
-}
-
 tasks {
 	jib {
 		allowInsecureRegistries = true

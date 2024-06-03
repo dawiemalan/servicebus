@@ -5,11 +5,6 @@ plugins {
     id "io.micronaut.aot"
 }
 
-java {
-    sourceCompatibility = JavaVersion.toVersion("17")
-    targetCompatibility = JavaVersion.toVersion("17")
-}
-
 micronaut {
     runtime("netty")
     testRuntime("spock2")
