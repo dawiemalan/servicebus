@@ -23,7 +23,7 @@ dependencies {
 	api platform(project(':platform'))
 	implementation platform("io.quarkus:quarkus-bom:$quarkusPlatformVersion")
 
-//	api project(':core')
+	api project(':core')
 
 	implementation 'io.quarkus:quarkus-core'
 	implementation 'io.quarkus:quarkus-arc'
@@ -36,7 +36,7 @@ dependencies {
 	compileOnly 'org.eclipse:yasson'
 	compileOnly 'org.graalvm.sdk:graal-sdk'
 
-//	testImplementation testFixtures(project(":core"))
+	testImplementation testFixtures(project(":test-fixtures"))
 	testImplementation 'com.fasterxml.jackson.core:jackson-databind'
 	testImplementation 'org.eclipse:yasson'
 }
