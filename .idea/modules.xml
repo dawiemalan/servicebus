@@ -7,6 +7,7 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/servicebus.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/servicebus.core.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/servicebus.core.test.iml" filepath="$PROJECT_DIR$/.idea/modules/core/servicebus.core.test.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/frameworks/micronaut/servicebus.frameworks.micronaut.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frameworks/micronaut/servicebus.frameworks.micronaut.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/frameworks/quarkus/quarkus-servicebus-deployment/servicebus.frameworks.quarkus.quarkus-servicebus-deployment.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frameworks/quarkus/quarkus-servicebus-deployment/servicebus.frameworks.quarkus.quarkus-servicebus-deployment.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/frameworks/spring-boot/servicebus.frameworks.spring-boot.main.iml" filepath="$PROJECT_DIR$/.idea/modules/frameworks/spring-boot/servicebus.frameworks.spring-boot.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/integrations/rabbitmq/servicebus.integrations.rabbitmq.main.iml" filepath="$PROJECT_DIR$/.idea/modules/integrations/rabbitmq/servicebus.integrations.rabbitmq.main.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/test-fixtures/servicebus.test-fixtures.testFixtures.iml" filepath="$PROJECT_DIR$/.idea/modules/test-fixtures/servicebus.test-fixtures.testFixtures.iml" />

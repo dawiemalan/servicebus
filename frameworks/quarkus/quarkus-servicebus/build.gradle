@@ -25,6 +25,8 @@ dependencies {
 
 	api project(':core')
 
+	annotationProcessor("io.quarkus:quarkus-extension-processor")
+
 	implementation 'io.quarkus:quarkus-core'
 	implementation 'io.quarkus:quarkus-arc'
 	compileOnly 'org.graalvm.sdk:graal-sdk'

@@ -16,12 +16,12 @@ compileTestJava {
 
 dependencies {
 	api platform(project(':platform'))
-	api platform('io.quarkus:quarkus-bom:3.8.3')
+	api platform("io.quarkus:quarkus-bom:$quarkusPlatformVersion")
 
 //	api project(':core')
 
 	implementation project(':frameworks:quarkus:quarkus-servicebus')
-	// why: https://quarkus.io/guides/building-my-first-extension
+
 	implementation 'io.quarkus:quarkus-smallrye-health-deployment'
 	testImplementation 'io.quarkus:quarkus-smallrye-health'
 }
